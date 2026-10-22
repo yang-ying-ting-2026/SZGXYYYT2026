@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>杨应庭 · 嵌入式软件四年路线图</title>
+<meta name="description" content="苏州工学院物联网工程 2026 级 · 本科就业路线 · 目标：大厂嵌入式软件工程师（RTOS / MCU / 驱动）">
+<script>
+  (function () {
+    try {
+      var s = localStorage.getItem('yyt-roadmap-theme');
+      var d = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', s || (d ? 'dark' : 'light'));
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  })();
+</script>
+<style>
+  :root {
+    --bg: #f3f6fb;
+    --bg-2: #eaf0f9;
+    --card: #ffffff;
+    --card-2: #f8fafd;
+    --text: #0f172a;
+    --muted: #5a6a84;
+    --faint: #8797ae;
+    --border: #e1e8f3;
+    --border-strong: #cfdaea;
+    --brand: #3557e8;
+    --brand-soft: rgba(53, 87, 232, .09);
+    --brand-line: rgba(53, 87, 232, .22);
+    --gauge: #0aa188;
+    --gauge-soft: rgba(10, 161, 136, .10);
+    --warn: #d9711f;
+    --warn-soft: rgba(217, 113, 31, .10);
+    --danger: #cf4444;
+    --track: #e9eef7;
+    --grid: rgba(16, 40, 84, .045);
+    --bar: rgba(244, 247, 252, .86);
+    --shadow: 0 1px 2px rgba(15, 26, 48, .04), 0 10px 28px rgba(15, 26, 48, .06);
+    --shadow-hover: 0 14px 36px rgba(15, 26, 48, .12);
+    --radius: 16px;
+    --mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+  }
+
+  [data-theme="dark"] {
+    --bg: #080d16;
+    --bg-2: #0d1420;
+    --card: #111a27;
+    --card-2: #16202f;
+    --text: #e7eefb;
+    --muted: #96a6bf;
+    --faint: #6d7f99;
+    --border: #1f2b3d;
+    --border-strong: #2b3a51;
+    --brand: #6a8bff;
+    --brand-soft: rgba(106, 139, 255, .14);
+    --brand-line: rgba(106, 139, 255, .3);
+    --gauge: #2ed3ae;
+    --gauge-soft: rgba(46, 211, 174, .12);
+    --warn: #f0a35e;
+    --warn-soft: rgba(240, 163, 94, .12);
+    --danger: #ff7b7b;
+    --track: #1b2637;
+    --grid: rgba(255, 255, 255, .035);
+    --bar: rgba(8, 13, 22, .86);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .34);
+    --shadow-hover: 0 16px 44px rgba(0, 0, 0, .5);
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 76px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.72;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+      radial-gradient(900px 520px at 6% -8%, var(--brand-soft), transparent 62%),
+      radial-gradient(760px 440px at 98% 2%, var(--gauge-soft), transparent 60%);
+    background-size: 34px 34px, 34px 34px, 100% 100%, 100% 100%;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+  }
+
+  h1, h2, h3, h4 { margin: 0; font-weight: 700; letter-spacing: -.01em; line-height: 1.3; }
+  p { margin: 0; }
+  ul, ol { margin: 0; padding: 0; list-style: none; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; }
+
+  .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+
+  /* ============ 顶栏 ============ */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 80;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: var(--bar);
+    border-bottom: 1px solid var(--border);
+  }
+  .bar { display: flex; align-items: center; gap: 18px; height: 62px; }
+  .brand { display: flex; align-items: center; gap: 10px; flex: none; }
+  .brand-mark {
+    display: grid; place-items: center;
+    width: 32px; height: 32px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--brand), var(--gauge));
+    color: #fff; font: 700 11px/1 var(--mono); letter-spacing: .06em;
+    box-shadow: 0 4px 14px var(--brand-soft);
+  }
+  .brand-txt { font-size: 14px; font-weight: 650; white-space: nowrap; }
+  .brand-txt small { display: block; font-size: 10.5px; font-weight: 500; color: var(--faint); font-family: var(--mono); letter-spacing: .04em; }
+
+  .nav { display: flex; gap: 2px; margin-left: auto; overflow: hidden; }
+  .nav a {
+    padding: 7px 10px; border-radius: 8px;
+    font-size: 13px; color: var(--muted); white-space: nowrap;
+    transition: background .18s ease, color .18s ease;
+  }
+  .nav a:hover { background: var(--brand-soft); color: var(--brand); }
+  .nav a.active { color: var(--brand); background: var(--brand-soft); font-weight: 600; }
+
+  .bar-actions { display: flex; gap: 6px; flex: none; }
+  .icon-btn {
+    display: grid; place-items: center;
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--muted); cursor: pointer;
+    transition: background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
+  }
+  .icon-btn:hover { color: var(--brand); border-color: var(--brand-line); transform: translateY(-1px); }
+  .icon-btn:focus-visible, .nav a:focus-visible, .tab:focus-visible, .check-row:focus-visible {
+    outline: 2px solid var(--brand); outline-offset: 2px;
+  }
+  .menu-btn { display: none; }
+
+  /* ============ 通用 ============ */
+  .section { padding: 58px 0 8px; }
+  .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 7px;
+    font: 600 11.5px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gauge); margin-bottom: 9px;
+  }
+  .eyebrow::before { content: ""; width: 18px; height: 2px; background: var(--gauge); border-radius: 2px; }
+  .section-title { font-size: 25px; }
+  .section-note { font-size: 12.5px; color: var(--faint); padding-bottom: 4px; }
+  .lead { color: var(--muted); font-size: 14.5px; max-width: 780px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--border-strong); }
+
+  .tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 9px; border-radius: 99px;
+    font-size: 11.5px; font-weight: 600; line-height: 1.5;
+    background: var(--brand-soft); color: var(--brand);
+    border: 1px solid transparent;
+  }
+  .tag.g { background: var(--gauge-soft); color: var(--gauge); }
+  .tag.w { background: var(--warn-soft); color: var(--warn); }
+  .tag.n { background: var(--track); color: var(--muted); }
+
+  .mono { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; }
+
+  .quote {
+    border-left: 3px solid var(--brand);
+    background: var(--card);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  /* ============ Hero ============ */
+  .hero { padding: 62px 0 26px; }
+  .hero-grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: 36px; align-items: center; }
+  .hero h1 { font-size: clamp(30px, 4.4vw, 47px); line-height: 1.14; letter-spacing: -.025em; }
+  .hero h1 em { font-style: normal; color: var(--brand); }
+  .hero-sub { margin-top: 16px; font-size: 15.5px; color: var(--muted); max-width: 560px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .meta-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 11px; border-radius: 8px;
+    background: var(--card); border: 1px solid var(--border);
+    font-size: 12px; color: var(--muted);
+  }
+  .meta-pill b { color: var(--text); font-weight: 650; }
+  .hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 28px; }
+  .stat {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 13px 14px;
+    transition: transform .2s ease, border-color .2s ease;
+  }
+  .stat:hover { transform: translateY(-2px); border-color: var(--brand-line); }
+  .stat .v { font: 700 20px/1.2 var(--mono); color: var(--brand); letter-spacing: -.02em; }
+  .stat .v small { font-size: 11px; font-weight: 600; color: var(--faint); margin-left: 2px; }
+  .stat .k { margin-top: 5px; font-size: 11.5px; color: var(--faint); }
+
+  .chip-wrap { position: relative; display: grid; place-items: center; padding: 6px 0; }
+  .chip-wrap::before {
+    content: ""; position: absolute; width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, var(--brand-soft), transparent 68%);
+    filter: blur(6px); z-index: -1;
+  }
+  .chip-svg { width: 100%; max-width: 430px; height: auto; }
+  .pin { fill: var(--faint); opacity: .5; }
+  .chip-body { fill: var(--card); stroke: var(--brand); stroke-width: 1.6; }
+  .chip-core { fill: var(--brand-soft); stroke: var(--brand-line); }
+  .chip-text { fill: var(--brand); font: 700 15px var(--mono); letter-spacing: .08em; }
+  .chip-sub { fill: var(--faint); font: 500 8.5px var(--mono); letter-spacing: .12em; }
+  .wave { fill: none; stroke: var(--gauge); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .wave-dash { stroke-dasharray: 6 7; animation: flow 2.6s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -52; } }
+  .trace { stroke: var(--brand-line); stroke-width: 1.2; fill: none; }
+  .node { fill: var(--card); stroke: var(--gauge); stroke-width: 1.6; }
+
+  /* ============ JD 差距 ============ */
+  .gap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .gap-card { padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .gap-card .jd { font-size: 13.5px; font-weight: 650; }
+  .gap-row { display: flex; gap: 8px; font-size: 12.8px; color: var(--muted); line-height: 1.62; }
+  .gap-row b { flex: none; width: 40px; color: var(--faint); font-weight: 600; font-size: 11.5px; }
+  .gap-row span { flex: 1; }
+  .gap-card .fix { margin-top: auto; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 12.5px; color: var(--brand); }
+
+  /* ============ Tabs ============ */
+  .tabs { display: flex; gap: 4px; padding: 5px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; width: fit-content; max-width: 100%; overflow-x: auto; }
+  .tab {
+    padding: 8px 16px; border: 0; border-radius: 9px; background: transparent;
+    color: var(--muted); font-size: 13.5px; font-weight: 600; cursor: pointer; white-space: nowrap;
+    transition: background .18s ease, color .18s ease;
+  }
+  .tab[aria-selected="true"] { background: var(--brand); color: #fff; box-shadow: 0 4px 14px var(--brand-soft); }
+  .tab:hover:not([aria-selected="true"]) { background: var(--brand-soft); color: var(--brand); }
+  .tab-panel { margin-top: 22px; animation: fade .22s ease both; }
+  .tab-panel[hidden] { display: none; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .year-head {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    padding: 16px 20px; margin-bottom: 14px;
+    background: linear-gradient(100deg, var(--brand-soft), transparent 70%);
+    border: 1px solid var(--border-line, var(--border)); border-radius: 12px;
+  }
+  .year-head h3 { font-size: 18px; }
+  .year-head .yr { font: 700 12px var(--mono); color: var(--brand); }
+
+  .sem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .sem { padding: 18px 18px 16px; }
+  .sem-top { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .sem-top h4 { font-size: 15px; }
+  .sem-top .date { font: 500 11.5px var(--mono); color: var(--faint); margin-left: auto; }
+  .blk { margin-top: 13px; }
+  .blk-t { font-size: 11.5px; font-weight: 700; letter-spacing: .06em; color: var(--faint); text-transform: uppercase; margin-bottom: 7px; }
+  .blk ul li {
+    position: relative; padding-left: 15px; font-size: 13px; color: var(--muted);
+    margin-bottom: 5px; line-height: 1.62;
+  }
+  .blk ul li::before {
+    content: ""; position: absolute; left: 2px; top: .62em;
+    width: 5px; height: 5px; border-radius: 2px; background: var(--brand-line);
+  }
+  .blk ul li b { color: var(--text); font-weight: 620; }
+  .course-line { display: flex; flex-wrap: wrap; gap: 6px; }
+  .course { font-size: 11.5px; padding: 3px 8px; border-radius: 6px; background: var(--track); color: var(--muted); }
+  .course.hi { background: var(--danger-soft, rgba(207, 68, 68, .1)); color: var(--danger); font-weight: 600; }
+  .course.mid { background: var(--warn-soft); color: var(--warn); }
+  .trap {
+    margin-top: 13px; padding: 10px 12px; border-radius: 10px;
+    background: var(--warn-soft); color: var(--warn);
+    font-size: 12.5px; line-height: 1.6;
+  }
+  .trap b { font-weight: 700; }
+
+  /* ============ 能力矩阵 ============ */
+  .meter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 26px; }
+  .meter-row { padding: 9px 0; border-bottom: 1px dashed var(--border); }
+  .meter-row:last-child { border-bottom: 0; }
+  .meter-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .meter-name { font-size: 13px; font-weight: 600; }
+  .meter-num { font: 600 11.5px var(--mono); color: var(--faint); }
+  .meter-num b { color: var(--brand); }
+  .meter { position: relative; height: 7px; border-radius: 99px; background: var(--track); overflow: hidden; }
+  .meter .goal {
+    position: absolute; inset: 0 auto 0 0;
+    background-color: rgba(10, 161, 136, .06);
+    background-image: repeating-linear-gradient(-45deg, var(--gauge-soft) 0 3px, transparent 3px 8px);
+    border-right: 1px solid var(--gauge);
+    border-radius: 99px;
+  }
+  .meter .now { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, var(--brand), #6a8bff); border-radius: 99px; transition: width .5s cubic-bezier(.2, .8, .2, 1); }
+  .legend { display: flex; gap: 16px; font-size: 11.5px; color: var(--faint); margin-top: 14px; }
+  .legend i { display: inline-block; width: 14px; height: 4px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+
+  /* ============ 项目阶梯 ============ */
+  .ladder { display: flex; flex-direction: column; gap: 12px; }
+  .step { display: grid; grid-template-columns: 76px 1fr; gap: 0; overflow: hidden; }
+  .step-l { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 18px 6px; background: var(--brand-soft); border-right: 1px solid var(--border); }
+  .step-l .lv { font: 700 20px var(--mono); color: var(--brand); }
+  .step-l .t { font: 500 10px var(--mono); color: var(--faint); text-align: center; }
+  .step-r { padding: 16px 18px; }
+  .step-r h4 { font-size: 14.5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .step-r .when { font: 500 11px var(--mono); color: var(--faint); }
+  .step-r .desc { font-size: 13px; color: var(--muted); margin-top: 7px; }
+  .step-r .stack { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+  .step-r .stack span { font: 500 11px var(--mono); padding: 2px 7px; border-radius: 5px; background: var(--track); color: var(--muted); }
+  .step-r .accept { margin-top: 9px; font-size: 12.3px; color: var(--gauge); }
+  .step-r .accept b { font-weight: 700; }
+  .step-r .resume-line {
+    margin-top: 9px; padding: 9px 11px; border-radius: 8px;
+    background: var(--card-2); border: 1px dashed var(--border-strong);
+    font-size: 12.3px; color: var(--muted); line-height: 1.6;
+  }
+  .step-r .resume-line b { color: var(--brand); font-weight: 650; }
+
+  /* ============ 表格 ============ */
+  .tbl-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid var(--border); background: var(--card); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; min-width: 620px; }
+  thead th {
+    text-align: left; padding: 12px 14px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+    color: var(--faint); background: var(--card-2); border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody td { padding: 12px 14px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr { transition: background .16s ease; }
+  tbody tr:hover { background: var(--brand-soft); }
+  tbody td b { color: var(--text); font-weight: 650; }
+
+  /* ============ 短板 ============ */
+  .weak-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .weak { padding: 18px; }
+  .weak-top { display: flex; align-items: center; gap: 9px; }
+  .weak-top .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--warn); flex: none; }
+  .weak-top .dot.b { background: var(--brand); }
+  .weak-top .dot.g { background: var(--gauge); }
+  .weak-top h4 { font-size: 14.5px; }
+  .weak .verdict { margin-top: 9px; font-size: 13px; color: var(--muted); }
+  .weak .plan3 { margin-top: 11px; display: grid; gap: 6px; }
+  .weak .plan3 div { display: grid; grid-template-columns: 62px 1fr; gap: 8px; font-size: 12.3px; color: var(--muted); }
+  .weak .plan3 span:first-child { color: var(--faint); font-weight: 600; }
+  .weak .bottom { margin-top: 11px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 12.3px; color: var(--warn); }
+  .weak.good .bottom { color: var(--gauge); }
+
+  /* ============ 投递地图 ============ */
+  .map-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .map-col { padding: 18px; }
+  .map-col h4 { font-size: 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .map-col .hint { font-size: 11.5px; color: var(--faint); margin-bottom: 12px; }
+  .map-col ul li { font-size: 12.8px; color: var(--muted); padding: 5px 0; border-bottom: 1px dashed var(--border); display: flex; justify-content: space-between; gap: 10px; }
+  .map-col ul li:last-child { border-bottom: 0; }
+  .map-col ul li em { font-style: normal; font-family: var(--mono); font-size: 10.5px; color: var(--faint); flex: none; }
+  .map-col.s1 { border-top: 3px solid var(--brand); }
+  .map-col.s2 { border-top: 3px solid var(--gauge); }
+  .map-col.s3 { border-top: 3px solid var(--border-strong); }
+
+  .season { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+  .season div { padding: 12px 14px; border-radius: 11px; background: var(--card); border: 1px solid var(--border); }
+  .season .m { font: 700 12px var(--mono); color: var(--brand); }
+  .season .d { font-size: 12.3px; color: var(--muted); margin-top: 4px; }
+
+  /* ============ 检查点 ============ */
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .check-card { padding: 16px 18px; }
+  .check-card h4 { font-size: 13.5px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .check-card h4 span { font: 500 11px var(--mono); color: var(--faint); }
+  .check-row {
+    display: flex; align-items: flex-start; gap: 9px;
+    padding: 6px 4px; border-radius: 7px; cursor: pointer;
+    font-size: 12.8px; color: var(--muted); line-height: 1.55;
+    transition: background .16s ease, color .16s ease;
+  }
+  .check-row:hover { background: var(--brand-soft); }
+  .check-row input { appearance: none; -webkit-appearance: none; width: 15px; height: 15px; margin: 2px 0 0; border: 1.5px solid var(--border-strong); border-radius: 4px; flex: none; cursor: pointer; position: relative; transition: all .16s ease; }
+  .check-row input:checked { background: var(--gauge); border-color: var(--gauge); }
+  .check-row input:checked::after { content: ""; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px; border: 2px solid #fff; border-top: 0; border-left: 0; transform: rotate(42deg); }
+  .check-row.done { color: var(--faint); }
+  .check-row.done span { text-decoration: line-through; text-decoration-color: var(--faint); }
+  .check-bar { margin-top: 18px; display: flex; align-items: center; gap: 12px; font-size: 12.5px; color: var(--faint); }
+  .check-bar .track { flex: 1; height: 6px; border-radius: 99px; background: var(--track); overflow: hidden; }
+  .check-bar .fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--gauge), var(--brand)); transition: width .4s ease; }
+
+  footer { margin-top: 66px; padding: 26px 0 40px; border-top: 1px solid var(--border); }
+  .foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--faint); }
+  .foot .mono { font-size: 11px; }
+
+  .to-top {
+    position: fixed; right: 20px; bottom: 20px; z-index: 70;
+    width: 40px; height: 40px; border-radius: 11px;
+    display: grid; place-items: center;
+    background: var(--card); border: 1px solid var(--border);
+    color: var(--muted); box-shadow: var(--shadow); cursor: pointer;
+    opacity: 0; pointer-events: none; transform: translateY(8px);
+    transition: opacity .2s ease, transform .2s ease, color .2s ease;
+  }
+  .to-top.show { opacity: 1; pointer-events: auto; transform: none; }
+  .to-top:hover { color: var(--brand); }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 28px; z-index: 99;
+    transform: translate(-50%, 14px); opacity: 0; pointer-events: none;
+    padding: 9px 18px; border-radius: 99px;
+    background: var(--text); color: var(--bg);
+    font-size: 12.5px; font-weight: 600;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ============ 响应式 ============ */
+  @media (max-width: 1000px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 18px; }
+    .chip-wrap { order: -1; max-width: 300px; margin: 0 auto; }
+    .gap-grid, .map-grid { grid-template-columns: 1fr 1fr; }
+    .nav a { padding: 7px 7px; font-size: 12.5px; }
+  }
+
+  @media (max-width: 820px) {
+    .nav {
+      position: absolute; left: 0; right: 0; top: 62px;
+      flex-direction: column; gap: 0; margin: 0;
+      background: var(--card); border-bottom: 1px solid var(--border);
+      padding: 8px; box-shadow: var(--shadow);
+      display: none;
+    }
+    .nav.open { display: flex; }
+    .nav a { padding: 10px 12px; font-size: 13.5px; }
+    .menu-btn { display: grid; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    .gap-grid, .sem-grid, .meter-grid, .weak-grid, .map-grid, .check-grid { grid-template-columns: 1fr; }
+    .season { grid-template-columns: 1fr 1fr; }
+    .section { padding: 42px 0 6px; }
+    .section-title { font-size: 21px; }
+    .wrap { padding: 0 16px; }
+    .brand-txt small { display: none; }
+    .step { grid-template-columns: 58px 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  }
+
+  /* ============ 打印 ============ */
+  @media print {
+    :root { --shadow: none; --shadow-hover: none; }
+    body { background: #fff; font-size: 11pt; }
+    body::before { display: none; }
+    .topbar, .to-top, .toast, .chip-wrap, .menu-btn, .check-bar { display: none !important; }
+    .wrap { max-width: none; padding: 0; }
+    .section { padding: 18px 0 0; page-break-inside: avoid; }
+    .card, .tbl-wrap { box-shadow: none; border-color: #ccc; }
+    .card:hover { transform: none; }
+    .tab-panel[hidden] { display: block !important; }
+    .tab-panel { margin-top: 10px; }
+    .tabs { display: none; }
+    .year-head { background: #f4f4f4; }
+    .step, .sem, .weak, .map-col, .check-card { page-break-inside: avoid; }
+    a { text-decoration: none; }
+    .hero { padding: 12px 0 0; }
+    .hero h1 { font-size: 22pt; }
+    .section-title { font-size: 15pt; }
+    .check-row input { border-color: #999; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main" style="position:absolute;left:-9999px">跳到正文</a>
+
+<header class="topbar">
+  <div class="wrap bar">
+    <a class="brand" href="#hero">
+      <span class="brand-mark">YET</span>
+      <span class="brand-txt">嵌入式四年路线图<small>SUST · IoT 2026</small></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="页面导航">
+      <a href="#hero">起点</a>
+      <a href="#gap">岗位差距</a>
+      <a href="#plan">四年路线</a>
+      <a href="#skill">能力矩阵</a>
+      <a href="#project">项目阶梯</a>
+      <a href="#contest">竞赛证书</a>
+      <a href="#weak">短板专项</a>
+      <a href="#map">投递地图</a>
+      <a href="#check">学期自检</a>
+    </nav>
+    <div class="bar-actions">
+      <button class="icon-btn" id="themeBtn" aria-label="切换深浅色" title="切换深浅色"></button>
+      <button class="icon-btn" id="printBtn" aria-label="打印 / 导出 PDF" title="打印 / 导出 PDF">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="展开导航" aria-expanded="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" id="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Roadmap · 2026 – 2030</div>
+        <h1>四年只练一件事：<br>让板子<em>按你的代码</em>运行</h1>
+        <p class="hero-sub">
+          苏州工学院物联网工程 2026 级，本科就业路线，方向锁定<strong>嵌入式软件（RTOS / MCU / Linux 驱动）</strong>。
+          不考研、不转专业，用八个学期把 C/C++、外设、实时系统、驱动串成一条能在大厂面试里讲清楚的技术线。
+        </p>
+        <div class="hero-meta">
+          <span class="meta-pill">姓名 <b>杨应庭</b></span>
+          <span class="meta-pill">专业 <b>物联网工程 · 262 班</b></span>
+          <span class="meta-pill">目标岗位 <b>嵌入式软件开发</b></span>
+          <span class="meta-pill">出口 <b>本科就业</b></span>
+        </div>
+        <div class="hero-stats" id="heroStats"></div>
+      </div>
+      <div class="chip-wrap">
+        <svg class="chip-svg" viewBox="0 0 380 320" role="img" aria-label="微控制器与信号波形示意">
+          <g class="pins">
+            <rect class="pin" x="86" y="52" width="10" height="16" rx="2"/><rect class="pin" x="112" y="52" width="10" height="16" rx="2"/>
+            <rect class="pin" x="138" y="52" width="10" height="16" rx="2"/><rect class="pin" x="164" y="52" width="10" height="16" rx="2"/>
+            <rect class="pin" x="190" y="52" width="10" height="16" rx="2"/><rect class="pin" x="216" y="52" width="10" height="16" rx="2"/>
+            <rect class="pin" x="242" y="52" width="10" height="16" rx="2"/><rect class="pin" x="268" y="52" width="10" height="16" rx="2"/>
+            <rect class="pin" x="86" y="212" width="10" height="16" rx="2"/><rect class="pin" x="112" y="212" width="10" height="16" rx="2"/>
+            <rect class="pin" x="138" y="212" width="10" height="16" rx="2"/><rect class="pin" x="164" y="212" width="10" height="16" rx="2"/>
+            <rect class="pin" x="190" y="212" width="10" height="16" rx="2"/><rect class="pin" x="216" y="212" width="10" height="16" rx="2"/>
+            <rect class="pin" x="242" y="212" width="10" height="16" rx="2"/><rect class="pin" x="268" y="212" width="10" height="16" rx="2"/>
+            <rect class="pin" x="58" y="82" width="16" height="10" rx="2"/><rect class="pin" x="58" y="108" width="16" height="10" rx="2"/>
+            <rect class="pin" x="58" y="134" width="16" height="10" rx="2"/><rect class="pin" x="58" y="160" width="16" height="10" rx="2"/>
+            <rect class="pin" x="58" y="186" width="16" height="10" rx="2"/>
+            <rect class="pin" x="306" y="82" width="16" height="10" rx="2"/><rect class="pin" x="306" y="108" width="16" height="10" rx="2"/>
+            <rect class="pin" x="306" y="134" width="16" height="10" rx="2"/><rect class="pin" x="306" y="160" width="16" height="10" rx="2"/>
+            <rect class="pin" x="306" y="186" width="16" height="10" rx="2"/>
+          </g>
+          <rect class="chip-body" x="74" y="68" width="232" height="144" rx="14"/>
+          <rect class="chip-core" x="112" y="106" width="156" height="68" rx="8"/>
+          <text class="chip-text" x="190" y="136" text-anchor="middle">MCU</text>
+          <text class="chip-sub" x="190" y="155" text-anchor="middle">CORTEX-M / RTOS</text>
+          <text class="chip-sub" x="86" y="86">VDD</text>
+          <text class="chip-sub" x="286" y="86" text-anchor="end">GND</text>
+          <text class="chip-sub" x="190" y="200" text-anchor="middle">STM32F103</text>
+
+          <path class="trace" d="M306 134 H352 V238"/>
+          <path class="wave" d="M-4 268 H22 L34 238 L46 298 L58 268 H92 L104 246 L116 290 L128 268 H160"/>
+          <path class="wave wave-dash" d="M160 268 H196 L208 240 L220 296 L232 268 H268 L280 250 L292 286 L304 268 H352"/>
+          <circle class="node" cx="352" cy="238" r="4.5"/>
+          <circle class="node" cx="352" cy="268" r="3.5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="gap">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Target First</div>
+          <h2 class="section-title">以大厂 JD 为终点，倒推你现在该补什么</h2>
+        </div>
+        <span class="section-note">依据：字节跳动「RTOS 嵌入式开发工程师 - 移动 OS」岗位要求</span>
+      </div>
+      <p class="lead" style="margin-bottom:18px">
+        岗位要求本科及以上、计算机/电子/通信相关专业、熟练 C/C++、有嵌入式系统开发经验并熟悉 RTOS、具备自驱与产品思维。
+        注意：JD 写的是「1 年以上嵌入式系统开发经验优先」，这不是你必须去公司实习才有的——课外的板级项目、竞赛作品同样算数，但必须<strong>真的跑在硬件上</strong>。
+      </p>
+      <div class="gap-grid" id="gapGrid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="plan">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Four Years</div>
+          <h2 class="section-title">八个学期，一条主线</h2>
+        </div>
+        <span class="section-note">← → 键可切换学年 · 打印时自动展开全部</span>
+      </div>
+      <div class="tabs" role="tablist" aria-label="学年切换" id="tabs"></div>
+      <div id="panels"></div>
+    </div>
+  </section>
+
+  <section class="section" id="skill">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Capability</div>
+          <h2 class="section-title">能力矩阵：现在的位置 vs 秋招要到的位置</h2>
+        </div>
+        <span class="section-note">当前值为保守估计，随每次自检更新</span>
+      </div>
+      <p class="lead" style="margin-bottom:16px">
+        深色条是你现在的水平，浅色条（右侧细线）是 2029 年秋招投递前需要达到的位置。差距最大的三项——外设、RTOS、驱动——正好是嵌入式面试的三大核心，也是这份路线图的主轴。
+      </p>
+      <div class="card" style="padding:20px 22px">
+        <div class="meter-grid" id="meters"></div>
+        <div class="legend">
+          <span><i style="background:var(--brand)"></i>当前水平</span>
+          <span><i style="background:var(--gauge-soft);border-right:2px solid var(--gauge)"></i>秋招目标</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="project">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Portfolio</div>
+          <h2 class="section-title">五级项目阶梯：从点灯到能讲 20 分钟</h2>
+        </div>
+        <span class="section-note">每级都有验收标准，达不到不算过关</span>
+      </div>
+      <p class="lead" style="margin-bottom:16px">
+        嵌入式面试几乎不问「你学过什么课」，只问「你做过什么、卡在哪、怎么解决的」。所以项目不是越多越好，是<strong>一级一级往上叠</strong>，每级都必须有可运行的代码、可复现的现象、可量化的结果。
+      </p>
+      <div class="ladder" id="ladder"></div>
+    </div>
+  </section>
+
+  <section class="section" id="contest">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Competition</div>
+          <h2 class="section-title">竞赛与证书：只打能写进简历的那些</h2>
+        </div>
+        <span class="section-note">含金量判断基于岗位对口度，非获奖难度</span>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>项目</th><th>时间窗口</th><th>岗位对口度</th><th>投入</th><th>给你的建议</th></tr>
+          </thead>
+          <tbody id="contestBody"></tbody>
+        </table>
+      </div>
+      <p class="section-note" style="margin-top:12px">报名时间、赛制、组队要求每年可能调整，以当年官方通知和学校教务/团委通知为准。</p>
+    </div>
+  </section>
+
+  <section class="section" id="weak">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Fix The Base</div>
+          <h2 class="section-title">四个短板，四份不同的处方</h2>
+        </div>
+        <span class="section-note">基于你现有的真实基础</span>
+      </div>
+      <div class="weak-grid" id="weakGrid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="map">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Job Map</div>
+          <h2 class="section-title">投递地图：从冲刺到保底</h2>
+        </div>
+        <span class="section-note">公司清单仅作关注范围，岗位以当年校招官网为准</span>
+      </div>
+      <p class="lead" style="margin-bottom:16px">
+        本科就业的现实是：大厂核心硬件研发岗竞争激烈，但<strong>嵌入式软件</strong>是少数本科仍有机会的方向——因为它更看工程能力和项目深度，而不是学历门槛。策略是：冲刺 2-3 家、主攻 8-10 家、保底 5 家，别把希望押在一家。
+      </p>
+      <div class="map-grid" id="mapGrid"></div>
+      <div class="season">
+        <div><div class="m">2029.03 – 05</div><div class="d">投暑期实习，简历定稿，笔试密集期</div></div>
+        <div><div class="m">2029.06 – 08</div><div class="d">暑期实习，争取转正意向</div></div>
+        <div><div class="m">2029.07 – 08</div><div class="d">提前批开闸，能投就投</div></div>
+        <div><div class="m">2029.09 – 11</div><div class="d">秋招正式批，海投 + 复盘</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="check">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Checkpoint</div>
+          <h2 class="section-title">学期自检：勾掉，或者承认没做到</h2>
+        </div>
+        <span class="section-note">勾选状态保存在本机浏览器</span>
+      </div>
+      <div class="check-grid" id="checkGrid"></div>
+      <div class="check-bar">
+        <span id="checkCount">0 / 0</span>
+        <div class="track"><div class="fill" id="checkFill"></div></div>
+        <button class="tag n" id="checkReset" style="cursor:pointer;border:1px solid var(--border)">清空</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <div style="font-weight:650;color:var(--text);margin-bottom:4px">杨应庭 · 嵌入式软件四年路线图</div>
+      <div>苏州工学院 物联网工程 2026 级 · 本科就业路线 · 生成于 <span id="genDate" class="mono"></span></div>
+    </div>
+    <div style="text-align:right">
+      <div class="mono">TARGET · EMBEDDED SWE (RTOS / MCU / DRIVER)</div>
+      <div style="margin-top:4px">规划会变，每学期末回来改一次</div>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="返回顶部">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
+</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* =========================================================
+     1. 数据
+     ========================================================= */
+  var DATA = {
+    fall: "2029-09-01",
+
+    gap: [
+      {
+        n: "01",
+        jd: "本科及以上，计算机 / 电子 / 通信相关专业",
+        now: "物联网工程，工科，专业口径完全对得上",
+        lack: "没有学历门槛问题，但有「电子基础」的隐含要求",
+        fix: "不转专业。用电路、模电、嵌入式系统三门课的成绩 + 硬件项目证明电子背景"
+      },
+      {
+        n: "02",
+        jd: "熟练掌握 C / C++，良好的编程习惯与代码结构",
+        now: "C 语言这学期刚开课，C++ 为零",
+        lack: "最大的硬缺口，也是面试第一道关（手写代码 + 指针陷阱）",
+        fix: "大一 C 累计 800 行 → 大二 C++ 类/STL → 大三项目重构 + 代码规范"
+      },
+      {
+        n: "03",
+        jd: "1 年以上嵌入式系统开发经验优先",
+        now: "0，还没点亮第一颗 LED",
+        lack: "缺的是时间沉淀，不是能力上限",
+        fix: "2026.12 买板起步，2027 全年外设项目，到 2029 秋招累计约 2.5 年"
+      },
+      {
+        n: "04",
+        jd: "熟悉 RTOS 系统开发",
+        now: "没接触过实时系统",
+        lack: "面试高频：任务调度、优先级反转、中断上下文",
+        fix: "大二上 FreeRTOS 三任务 → 大三低功耗调度 → 能画出优先级与资源依赖图"
+      },
+      {
+        n: "05",
+        jd: "软硬协同、功耗优化、与硬件/工厂对接",
+        now: "没碰过硬件调试工具",
+        lack: "会不会用示波器、看不看得懂原理图，是硬件岗的分水岭",
+        fix: "模电实验亲手做 + 万用表/示波器 + 看原理图 + 输出一份功耗测试报告"
+      },
+      {
+        n: "06",
+        jd: "自驱、责任心、学习能力，有一定的产品思维",
+        now: "心理委员：真实的组织与沟通经历",
+        lack: "不缺口径，缺的是「工程场景」里的证据",
+        fix: "把班级工作的协调能力，转写成项目里的跨角色协作，别硬吹"
+      }
+    ],
+
+    plan: [
+      {
+        id: "y1",
+        label: "大一",
+        yr: "YEAR 01",
+        title: "地基年：从「不会打字」到「点亮第一颗灯」",
+        sems: [
+          {
+            term: "大一上",
+            date: "2026.09 – 2027.01",
+            status: "进行中",
+            goal: "不挂科、打字过关、C 语言能写 300 行、第一次让板子亮起来",
+            courses: [
+              { n: "高等数学（上）", p: "hi", t: "最高" },
+              { n: "C 语言程序设计", p: "hi", t: "最高" },
+              { n: "大学物理（电磁）", p: "mid", t: "高" },
+              { n: "计算机导论", p: "mid", t: "高" },
+              { n: "大学英语（一）", p: "", t: "中" }
+            ],
+            todos: [
+              "<b>打字</b>：金山打字通每天 25 分钟，11 月底前到 60 字/分、正确率 95%。这是所有工作的前置，必须先过",
+              "<b>C 语言</b>：跟翁恺或鹏哥，每天手敲 ≥30 行；期末累计 800 行，能默写指针、结构体、文件读写",
+              "<b>高数</b>：跟宋浩过一遍 + 课后题 + 每周错题重做，期末冲 75",
+              "<b>四级词汇</b>：每天 40 词，只求「见词识义」，先不练拼写和口语",
+              "<b>Linux</b>：11 月装 WSL2 + Ubuntu，掌握 ls / cd / mkdir / cp / mv / rm / cat / vim / gcc / make",
+              "<b>硬件</b>：12 月买 STM32F103C8T6 最小系统板 + ST-Link（80–120 元），寒假点亮 LED、按键、串口打印",
+              "<b>找组织</b>：摸清学校电子/物联网实验室、电子协会的招新时间，先混进开放实验室"
+            ],
+            milestone: [
+              "GitHub 第一个仓库：C 语言练习 + 点灯代码",
+              "打字 60 字/分",
+              "C 语言期末 ≥80，高数上 ≥75"
+            ],
+            trap: "<b>别买 300 元大礼包</b>（板子 + 几十个传感器 + 视频课），90% 会吃灰。也别用 AI 直接生成作业代码——期末手写会挂。"
+          },
+          {
+            term: "大一下",
+            date: "2027.02 – 2027.07",
+            status: "",
+            goal: "七大外设各跑通一次、四级过线、电路实验亲手做完",
+            courses: [
+              { n: "高等数学（下）", p: "hi", t: "最高" },
+              { n: "电路与电子学", p: "hi", t: "最高" },
+              { n: "线性代数", p: "mid", t: "高" },
+              { n: "数据结构（若开）", p: "mid", t: "高" },
+              { n: "大学英语（二）", p: "", t: "中" }
+            ],
+            todos: [
+              "<b>电路与电子学</b>：实验课必须亲手做，学会万用表测电压/通断/二极管，能看懂简单原理图",
+              "<b>STM32 外设通关</b>：GPIO → EXTI 中断 → TIM 定时器/PWM → UART → I2C → SPI → ADC，每个写一个 demo",
+              "每个外设完成就 commit 一次，记录「做了什么 / 卡在哪 / 怎么解决」",
+              "<b>四级</b>：6 月过线（≥425）。若学校不让大一考，顺延到大二上，但词汇不能停",
+              "<b>蓝桥杯</b>：3 月报名「单片机设计与开发」，4 月省赛去打一次，不指望获奖，先熟悉赛制",
+              "<b>暑假项目</b>：DHT11 温湿度 + OLED 显示 + 串口上报，代码 ≥600 行，写 README"
+            ],
+            milestone: [
+              "STM32 外设 demo 仓库（7 个外设）",
+              "英语四级证书",
+              "第一个完整项目跑通并开源"
+            ],
+            trap: "别只抄库函数不知道为什么。硬件岗面试会问「这个上拉电阻为什么选 10k」，答不出就是没学懂。"
+          }
+        ]
+      },
+      {
+        id: "y2",
+        label: "大二",
+        yr: "YEAR 02",
+        title: "定型年：外设 → RTOS，方向彻底锁死",
+        sems: [
+          {
+            term: "大二上",
+            date: "2027.09 – 2028.01",
+            status: "",
+            goal: "模电站住、FreeRTOS 跑通、C++ 能写类、日语 N3",
+            courses: [
+              { n: "模拟电子技术", p: "hi", t: "最高" },
+              { n: "数据结构", p: "hi", t: "最高" },
+              { n: "计算机网络", p: "mid", t: "高" },
+              { n: "概率论与数理统计", p: "mid", t: "高" },
+              { n: "大学英语", p: "", t: "中" }
+            ],
+            todos: [
+              "<b>模电</b>：三极管、运放、滤波，配合实验，目标能看懂常见传感器电路",
+              "<b>C++</b>：类/对象/引用/构造析构/STL 容器，用 C++ 重写大一下的项目",
+              "<b>FreeRTOS</b>：任务创建/优先级/队列/信号量/互斥量/事件组/软件定时器；做「采集 + 显示 + 通信」三任务 demo",
+              "<b>计算机网络</b>：TCP/IP、HTTP、MQTT（物联网必用）",
+              "<b>日语 N3</b>：12 月考",
+              "<b>简历 v0</b>：用 STAR 把两个项目写成三段，先有再改"
+            ],
+            milestone: [
+              "FreeRTOS 三任务项目稳定运行",
+              "JLPT N3",
+              "能用 C++ 独立写一个类并复用"
+            ],
+            trap: "RTOS 别只背 API。面试官问「为什么用 RTOS 不用裸机轮询」，答不出就等于没用过。"
+          },
+          {
+            term: "大二下",
+            date: "2028.02 – 2028.07",
+            status: "",
+            goal: "Linux 入门、拿一个省级奖项、找到第一段实习",
+            courses: [
+              { n: "操作系统", p: "hi", t: "最高" },
+              { n: "嵌入式系统", p: "hi", t: "最高" },
+              { n: "传感技术", p: "mid", t: "高" },
+              { n: "通信原理", p: "mid", t: "高" }
+            ],
+            todos: [
+              "<b>Linux 系统编程</b>：文件 IO、进程线程、socket、Makefile、GDB；写一个多线程 TCP 服务器",
+              "<b>蓝桥杯省赛</b>（4 月）冲省二以上；电赛省赛（8 月，若有队）跟一次",
+              "<b>KiCad / Altium</b> 基础：能画两层板、能看懂别人画的板（不用精通）",
+              "<b>5–6 月</b>：投苏州本地小公司/校友企业暑期实习（嵌入式助理、测试岗），工资不重要，要真实项目",
+              "<b>六级</b>：四级已过的话，这学期解决"
+            ],
+            milestone: [
+              "Linux 多线程服务器能跑",
+              "省级竞赛奖项",
+              "第一段实习经历"
+            ],
+            trap: "别为了竞赛翘专业课导致绩点崩。校招简历筛选和实习转正都会看绩点。"
+          }
+        ]
+      },
+      {
+        id: "y3",
+        label: "大三",
+        yr: "YEAR 03",
+        title: "弹药年：驱动 + 实习，简历从空到满",
+        sems: [
+          {
+            term: "大三上",
+            date: "2028.09 – 2029.01",
+            status: "",
+            goal: "能写字符设备驱动、有一个能讲 20 分钟的项目",
+            courses: [
+              { n: "嵌入式系统设计", p: "hi", t: "最高" },
+              { n: "物联网综合设计", p: "mid", t: "高" },
+              { n: "通信原理", p: "mid", t: "高" },
+              { n: "专业选修", p: "", t: "按方向选" }
+            ],
+            todos: [
+              "<b>Linux 驱动</b>：字符设备（open/read/write/ioctl）、设备树、platform 总线、并发与竞态（自旋锁/信号量）；给虚拟设备写驱动 + 用户态测试程序",
+              "<b>项目升级</b>：FreeRTOS + 低功耗 + 自定义协议帧（CRC）+ 上位机（Python/Qt）",
+              "<b>嵌入式八股</b>：volatile/static/const、指针与内存对齐、大小端、中断、启动流程、栈溢出",
+              "<b>LeetCode</b>：累计 150 题，用 C/C++ 写",
+              "<b>12 月</b>：列投递名单、简历 v2 定稿，找学长或老师改一遍"
+            ],
+            milestone: [
+              "驱动代码 + 完整项目文档",
+              "八股成体系，能连续讲 20 分钟",
+              "简历 v2"
+            ],
+            trap: "项目别堆功能。面试官只关心：为什么这么设计、遇到什么 bug、怎么量化效果（功耗降了多少、响应快了多少）。"
+          },
+          {
+            term: "大三下",
+            date: "2029.02 – 2029.07",
+            status: "关键窗口",
+            goal: "拿到暑期实习——这是秋招最强的筹码",
+            courses: [
+              { n: "专业选修", p: "", t: "按方向选" },
+              { n: "毕业设计开题", p: "mid", t: "高" }
+            ],
+            todos: [
+              "<b>2–3 月</b>：简历定稿，投暑期实习——字节、华为、小米、大疆、OPPO/vivo、蔚来、汇顶、乐鑫",
+              "<b>3–5 月</b>：笔试密集（C/C++、操作系统、计网、嵌入式），面试（项目深挖 + 八股）",
+              "<b>6–8 月实习</b>：目标独立负责一个模块，拿到转正意向",
+              "<b>没拿到大厂</b>就立刻转苏州本地或中型公司，秋招时「有实习」比「没实习」高一档",
+              "<b>毕设选题</b>和实习/项目绑定，一举两得"
+            ],
+            milestone: [
+              "一段能写进简历的实习",
+              "转正意向或主管背书",
+              "毕设开题通过"
+            ],
+            trap: "别等「准备好再投」。第一批面试就是最好的复习——投 10 家复盘 10 次，比在家刷一个月题有用。"
+          }
+        ]
+      },
+      {
+        id: "y4",
+        label: "大四",
+        yr: "YEAR 04",
+        title: "收割年：秋招、毕设、入职",
+        sems: [
+          {
+            term: "大四上",
+            date: "2029.09 – 2030.01",
+            status: "",
+            goal: "秋招收官，拿到 1–2 个嵌入式相关 offer",
+            courses: [
+              { n: "毕业设计", p: "hi", t: "最高" },
+              { n: "少量选修", p: "", t: "中" }
+            ],
+            todos: [
+              "<b>7–8 月提前批</b>：能投就投，不影响正式批",
+              "<b>9–11 月正式批</b>：冲刺 2–3 家 + 主攻 10 家 + 保底 5 家",
+              "<b>每场面完当天写复盘</b>：问到什么、答崩什么、下次怎么答",
+              "<b>offer 对比顺序</b>：技术方向 > 平台/团队 > 薪资（第一份工作定技术栈）",
+              "<b>三方协议</b>：看清违约条款再签"
+            ],
+            milestone: [
+              "1–2 个 offer",
+              "三方签署",
+              "毕设中期不翻车"
+            ],
+            trap: "别拿到第一个 offer 就停。也别只看薪资——去一个「不做嵌入式」的岗位，三年后会很被动。"
+          },
+          {
+            term: "大四下",
+            date: "2030.02 – 2030.06",
+            status: "",
+            goal: "顺利毕业，入职不慌",
+            courses: [
+              { n: "毕业设计", p: "hi", t: "最高" }
+            ],
+            todos: [
+              "<b>毕设</b>做扎实，写成技术文档（面试还能讲）",
+              "<b>入职前补课</b>：公司技术栈、Linux、C++、英文手册阅读",
+              "<b>6 月毕业</b>，7 月报到"
+            ],
+            milestone: [
+              "毕设答辩通过",
+              "毕业证 + 学位证",
+              "入职准备完成"
+            ],
+            trap: "别提前松懈挂科。拿不到毕业证，offer 直接作废。"
+          }
+        ]
+      }
+    ],
+
+    skills: [
+      { name: "C 语言", now: 25, goal: 90 },
+      { name: "C++", now: 0, goal: 75 },
+      { name: "数据结构与算法", now: 10, goal: 70 },
+      { name: "STM32 外设驱动", now: 0, goal: 90 },
+      { name: "FreeRTOS / 实时系统", now: 0, goal: 85 },
+      { name: "Linux 系统编程", now: 0, goal: 70 },
+      { name: "Linux 设备驱动", now: 0, goal: 60 },
+      { name: "硬件调试（万用表 / 示波器 / 逻辑分析仪）", now: 5, goal: 70 },
+      { name: "模电与原理图识读", now: 10, goal: 60 },
+      { name: "英文手册 / datasheet 阅读", now: 15, goal: 65 },
+      { name: "日语", now: 55, goal: 75 },
+      { name: "工程习惯（Git / 文档 / 复盘）", now: 10, goal: 80 }
+    ],
+
+    ladder: [
+      {
+        lv: "L1",
+        when: "2026.12 – 2027.01",
+        title: "点亮与烧录链路",
+        desc: "从「代码」到「板子上真的亮」的完整链路：装工具链、配时钟、写 GPIO、烧录、看现象。这一步的价值不在代码，在建立调试闭环。",
+        stack: ["Keil / CubeIDE", "STM32F103", "GPIO", "ST-Link"],
+        accept: "不用教程能独立新建工程；能解释「为什么 LED 接这个引脚、串这个电阻」",
+        resume: "第一行代码在真实硬件上跑通，建立「写—烧—看现象」的调试循环。"
+      },
+      {
+        lv: "L2",
+        when: "2027.07",
+        title: "传感器采集终端",
+        desc: "温湿度 + 光照采集，OLED 本地显示，串口按自定义帧格式上报。这是你的第一个「完整作品」，也是简历第一行项目。",
+        stack: ["I2C", "SPI", "ADC", "UART", "OLED", "帧格式"],
+        accept: "连续运行 24 小时不死机；拔插传感器能重连；代码 ≥600 行且有 README",
+        resume: "独立完成多传感器采集终端，自定义串口帧协议，连续运行 24h 稳定。"
+      },
+      {
+        lv: "L3",
+        when: "2027.12",
+        title: "FreeRTOS 多任务终端",
+        desc: "把 L2 拆成采集、显示、通信三个任务，用队列传数据、信号量同步，加看门狗。这是从「会写代码」到「懂系统」的分界。",
+        stack: ["FreeRTOS", "队列", "信号量", "看门狗", "优先级"],
+        accept: "能画出任务优先级表和资源依赖图；能讲清「为什么这个任务优先级高」",
+        resume: "基于 FreeRTOS 重构采集终端为三任务架构，队列解耦，看门狗保障异常自恢复。"
+      },
+      {
+        lv: "L4",
+        when: "2028.12",
+        title: "Linux 字符设备驱动",
+        desc: "写一个字符设备驱动，用户态程序通过 ioctl 控制，处理并发访问。这是「移动 OS / 系统软件」类岗位真正的门槛。",
+        stack: ["设备树", "platform", "ioctl", "自旋锁", "内核模块"],
+        accept: "能 insmod / rmmod 无残留；并发压测不死锁；能讲清用户态到内核态的完整路径",
+        resume: "实现字符设备驱动，支持 ioctl 配置与并发访问保护，完成用户态—内核态全链路验证。"
+      },
+      {
+        lv: "L5",
+        when: "2029 全年",
+        title: "综合项目 / 毕业设计",
+        desc: "把低功耗、通信协议、上位机、稳定性测试串成一个能撑 20 分钟讲述的系统。它不需要多酷，只需要每一层你都能解释。",
+        stack: ["低功耗", "协议设计", "上位机", "稳定性测试"],
+        accept: "有功耗 / 时延 / 稳定性三项量化数据；有一页架构图；能回答「换一颗 MCU 怎么改」",
+        resume: "主导低功耗多节点采集系统，休眠电流降至 X μA，上报时延 < Y ms，连续运行 Z 天无丢包。"
+      }
+    ],
+
+    contests: [
+      ["全国大学生电子设计竞赛", "省赛偶数年 8 月 / 国赛奇数年 8 月", "极高", "高（2–3 个月）", "大二下打省赛练手；2029 国赛与暑期实习冲突，就业导向选实习"],
+      ["蓝桥杯 · 单片机设计与开发", "3 月报名，4 月省赛", "高", "中（1–2 个月）", "性价比最高。大一下试水，大二冲省二以上"],
+      ["全国大学生嵌入式芯片与系统设计竞赛", "3–8 月", "极高", "中高", "作品可直接当项目写进简历，大二或大三参加一次"],
+      ["全国大学生智能汽车竞赛", "7–8 月", "高", "很高（半年）", "只在实验室有成熟队伍时跟，否则时间成本不划算"],
+      ["中国大学生计算机设计大赛（物联网应用）", "3–6 月", "中", "中", "锦上添花，有精力再做"],
+      ["CET-4", "每年 6 / 12 月", "门槛项", "低", "2027.06 必须过，不少大厂网申直接卡这一条"],
+      ["CET-6", "每年 6 / 12 月", "加分", "中", "2028 年过，读 datasheet 和英文面试都用得上"],
+      ["JLPT N3 → N2", "7 月 / 12 月", "差异化", "中", "N3 大二上，N2 大三；日企是对日业务 Plan B，别挤占主线"],
+      ["软考中级 · 嵌入式系统设计师", "5 / 11 月", "低", "中", "国企、事业单位有用，大厂校招基本不看，可不考"]
+    ],
+
+    weak: [
+      {
+        dot: "",
+        title: "数学：高考 103（全国二卷）",
+        verdict: "中等偏下。但你的目标不是考研数学，是「模电、信号、算法」里够用就行。",
+        steps: [
+          ["大一上", "高数跟宋浩 + 每周错题重做，期末 75+"],
+          ["大一下", "线代多刷题，套路固定，能拿分"],
+          ["大二", "概率论理解公式来源，别死记"]
+        ],
+        bottom: "数学拖垮的直接后果是模电听不懂，而模电是硬件岗面试的常考点。"
+      },
+      {
+        dot: "",
+        title: "英语：口语极差、拼音弱",
+        verdict: "你最大的隐性风险，但风险点不在口语，在「读不懂 datasheet」。",
+        steps: [
+          ["大一", "四级词汇 + 阅读，先过线，口语暂时放"],
+          ["大二", "每天精读 1 页英文芯片手册"],
+          ["大三", "面试能用简单句讲清项目即可"]
+        ],
+        bottom: "嵌入式岗不要求口语流利，但要求能读手册。大二还读不了，后面会很痛。"
+      },
+      {
+        dot: "b",
+        title: "打字与电脑基础：慢、Office 弱",
+        verdict: "一次性投入 40 小时就能永久解决的事，别拖到大二。",
+        steps: [
+          ["第 1 个月", "每天 25 分钟，到 60 字/分"],
+          ["第 2 个月", "快捷键 + 文件管理 + 搜索技巧"],
+          ["第 3 个月", "Office 只学 Word 排版和 Excel 函数"]
+        ],
+        bottom: "打字慢是纯损耗：拖慢敲代码、写文档、记笔记的每一步。"
+      },
+      {
+        dot: "g",
+        title: "日语：高考 99，有真实基础",
+        verdict: "真实优势，但只能当「差异化」，不能当主线。",
+        steps: [
+          ["大一", "每周 3 小时保温，别投入过多"],
+          ["大二上", "N3（12 月）"],
+          ["大三", "N2（如时间允许）"]
+        ],
+        bottom: "时间红线：日语不超过课外时间的 10%。主线永远是 C 语言和板子。"
+      }
+    ],
+
+    map: [
+      {
+        cls: "s1",
+        title: "冲刺 · 2–3 家",
+        hint: "提前批 + 暑期实习，投入产出比最高",
+        items: [
+          ["字节跳动", "移动 OS / 硬件"],
+          ["华为", "终端 / 2012"],
+          ["小米", "生态链 / 手机"],
+          ["大疆", "嵌入式"],
+          ["OPPO / vivo", "系统软件"]
+        ]
+      },
+      {
+        cls: "s2",
+        title: "主攻 · 8–10 家",
+        hint: "嵌入式岗位量大，本科机会最多的区间",
+        items: [
+          ["汇顶科技", "芯片固件"],
+          ["乐鑫科技", "ESP32 生态"],
+          ["涂鸦智能", "IoT 模组"],
+          ["海康威视", "嵌入式"],
+          ["大华股份", "嵌入式"],
+          ["TP-LINK", "网络设备"],
+          ["影石 Insta360", "影像固件"],
+          ["安克创新", "消费电子"]
+        ]
+      },
+      {
+        cls: "s3",
+        title: "保底 · 苏州 5 家",
+        hint: "本地企业，面试成本低，可做兜底",
+        items: [
+          ["汇川技术", "工控 / 驱动"],
+          ["科沃斯", "机器人"],
+          ["纳芯微", "模拟芯片"],
+          ["敏芯微电子", "MEMS"],
+          ["思瑞浦", "模拟芯片"],
+          ["中科可控", "整机 / 固件"]
+        ]
+      }
+    ],
+
+    checks: [
+      {
+        t: "大一上",
+        d: "2026.09 – 2027.01",
+        items: [
+          "打字 60 字/分，正确率 95%",
+          "C 语言期末 ≥80，累计手敲 800 行",
+          "高数上 ≥75，无挂科",
+          "STM32 点亮 LED + 按键 + 串口打印",
+          "建好 GitHub 仓库，完成第一次 commit"
+        ]
+      },
+      {
+        t: "大一下",
+        d: "2027.02 – 2027.07",
+        items: [
+          "STM32 七大外设各有一个可运行 demo",
+          "英语四级 ≥425",
+          "电路实验全部亲手做完",
+          "暑假项目跑通并写了 README",
+          "蓝桥杯报名并完赛"
+        ]
+      },
+      {
+        t: "大二上",
+        d: "2027.09 – 2028.01",
+        items: [
+          "模电 ≥70，能看懂传感器电路",
+          "FreeRTOS 三任务 demo 稳定运行",
+          "C++ 能独立写类并使用 STL",
+          "日语 N3 通过",
+          "简历 v0 完成（两个项目 + STAR）"
+        ]
+      },
+      {
+        t: "大二下",
+        d: "2028.02 – 2028.07",
+        items: [
+          "Linux 多线程 TCP 服务器能跑",
+          "蓝桥杯省二以上（或电赛完赛）",
+          "能画 / 能看懂两层板",
+          "拿到一段暑期实习（本地也算）",
+          "六级通过（可选）"
+        ]
+      },
+      {
+        t: "大三上",
+        d: "2028.09 – 2029.01",
+        items: [
+          "字符设备驱动能 insmod / rmmod",
+          "项目有量化数据（功耗 / 时延）",
+          "LeetCode 累计 150 题",
+          "能连续讲 20 分钟项目不卡壳",
+          "简历 v2 定稿"
+        ]
+      },
+      {
+        t: "大三下",
+        d: "2029.02 – 2029.07",
+        items: [
+          "投出 ≥20 份暑期实习简历",
+          "拿到 1 段大厂或中型公司实习",
+          "实习中有独立负责的模块",
+          "拿到转正意向或主管背书",
+          "毕设开题通过"
+        ]
+      },
+      {
+        t: "大四上",
+        d: "2029.09 – 2030.01",
+        items: [
+          "秋招投递 ≥30 家",
+          "完成 ≥10 场面试并逐场复盘",
+          "拿到 ≥1 个嵌入式相关 offer",
+          "三方签署，条款看清"
+        ]
+      },
+      {
+        t: "大四下",
+        d: "2030.02 – 2030.06",
+        items: [
+          "毕设答辩通过",
+          "入职前技术栈预习完成",
+          "顺利拿到毕业证 + 学位证"
+        ]
+      }
+    ]
+  };
+
+  /* =========================================================
+     2. 工具
+     ========================================================= */
+  function el(tag, cls, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html != null) n.innerHTML = html;
+    return n;
+  }
+
+  function daysTo(iso) {
+    var target = new Date(iso + "T00:00:00");
+    var diff = target.getTime() - Date.now();
+    return Math.max(0, Math.ceil(diff / 86400000));
+  }
+
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+
+  function today() {
+    var d = new Date();
+    return d.getFullYear() + "." + pad(d.getMonth() + 1) + "." + pad(d.getDate());
+  }
+
+  var toastTimer = null;
+  function toast(msg) {
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("show"); }, 1800);
+  }
+
+  /* =========================================================
+     3. Hero 统计
+     ========================================================= */
+  function renderHero() {
+    var box = document.getElementById("heroStats");
+    var d = daysTo(DATA.fall);
+    var stats = [
+      { v: d > 0 ? d : "0", u: "天", k: "距 2029 秋招启动" },
+      { v: "8", u: "学期", k: "可规划的完整周期" },
+      { v: "5", u: "级", k: "项目阶梯" },
+      { v: "12", u: "项", k: "能力待补齐" }
+    ];
+    stats.forEach(function (s) {
+      var n = el("div", "stat");
+      n.appendChild(el("div", "v", s.v + "<small>" + s.u + "</small>"));
+      n.appendChild(el("div", "k", s.k));
+      box.appendChild(n);
+    });
+    document.getElementById("genDate").textContent = today();
+  }
+
+  /* =========================================================
+     4. JD 差距
+     ========================================================= */
+  function renderGap() {
+    var box = document.getElementById("gapGrid");
+    DATA.gap.forEach(function (g) {
+      var c = el("div", "card gap-card");
+      c.appendChild(el("span", "tag n mono", g.n));
+      c.appendChild(el("div", "jd", g.jd));
+      var rows = [
+        ["现状", g.now],
+        ["缺口", g.lack]
+      ];
+      rows.forEach(function (r) {
+        var row = el("div", "gap-row");
+        row.appendChild(el("b", null, r[0]));
+        row.appendChild(el("span", null, r[1]));
+        c.appendChild(row);
+      });
+      c.appendChild(el("div", "fix", "→ " + g.fix));
+      box.appendChild(c);
+    });
+  }
+
+  /* =========================================================
+     5. Tabs
+     ========================================================= */
+  function renderPlan() {
+    var tabBox = document.getElementById("tabs");
+    var panelBox = document.getElementById("panels");
+    var tabs = [];
+
+    DATA.plan.forEach(function (year, i) {
+      var id = "panel-" + year.id;
+      var btn = el("button", "tab", year.label);
+      btn.type = "button";
+      btn.id = "tab-" + year.id;
+      btn.setAttribute("role", "tab");
+      btn.setAttribute("aria-controls", id);
+      btn.setAttribute("aria-selected", i === 0 ? "true" : "false");
+      btn.setAttribute("tabindex", i === 0 ? "0" : "-1");
+      btn.addEventListener("click", function () { select(i); });
+      tabBox.appendChild(btn);
+      tabs.push(btn);
+
+      var panel = el("div", "tab-panel");
+      panel.id = id;
+      panel.setAttribute("role", "tabpanel");
+      panel.setAttribute("aria-labelledby", btn.id);
+      panel.tabIndex = 0;
+      if (i !== 0) panel.hidden = true;
+
+      var head = el("div", "year-head");
+      head.appendChild(el("span", "yr", year.yr));
+      head.appendChild(el("h3", null, year.title));
+      panel.appendChild(head);
+
+      var grid = el("div", "sem-grid");
+      year.sems.forEach(function (s) {
+        var card = el("div", "card sem");
+        var top = el("div", "sem-top");
+        top.appendChild(el("h4", null, s.term));
+        if (s.status) top.appendChild(el("span", "tag " + (s.status === "关键窗口" ? "w" : "g"), s.status));
+        top.appendChild(el("span", "date", s.date));
+        card.appendChild(top);
+        card.appendChild(el("div", "lead", "目标：" + s.goal));
+
+        var cb = el("div", "blk");
+        cb.appendChild(el("div", "blk-t", "课程重点"));
+        var cl = el("div", "course-line");
+        s.courses.forEach(function (c) {
+          cl.appendChild(el("span", "course " + (c.p || ""), c.n + " · " + c.t));
+        });
+        cb.appendChild(cl);
+        card.appendChild(cb);
+
+        var tb = el("div", "blk");
+        tb.appendChild(el("div", "blk-t", "必做动作"));
+        var ul = el("ul");
+        s.todos.forEach(function (t) { ul.appendChild(el("li", null, t)); });
+        tb.appendChild(ul);
+        card.appendChild(tb);
+
+        var mb = el("div", "blk");
+        mb.appendChild(el("div", "blk-t", "里程碑产出"));
+        var ul2 = el("ul");
+        s.milestone.forEach(function (t) { ul2.appendChild(el("li", null, "<b>" + t + "</b>")); });
+        mb.appendChild(ul2);
+        card.appendChild(mb);
+
+        card.appendChild(el("div", "trap", "坑：" + s.trap));
+        grid.appendChild(card);
+      });
+      panel.appendChild(grid);
+      panelBox.appendChild(panel);
+    });
+
+    function select(idx) {
+      tabs.forEach(function (t, i) {
+        var on = i === idx;
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.setAttribute("tabindex", on ? "0" : "-1");
+        document.getElementById("panel-" + DATA.plan[i].id).hidden = !on;
+      });
+      tabs[idx].focus();
+    }
+
+    tabBox.addEventListener("keydown", function (e) {
+      var cur = tabs.indexOf(document.activeElement);
+      if (cur < 0) return;
+      var next = -1;
+      if (e.key === "ArrowRight") next = (cur + 1) % tabs.length;
+      else if (e.key === "ArrowLeft") next = (cur - 1 + tabs.length) % tabs.length;
+      else if (e.key === "Home") next = 0;
+      else if (e.key === "End") next = tabs.length - 1;
+      if (next >= 0) { e.preventDefault(); select(next); }
+    });
+  }
+
+  /* =========================================================
+     6. 能力矩阵
+     ========================================================= */
+  function renderSkills() {
+    var box = document.getElementById("meters");
+    DATA.skills.forEach(function (s) {
+      var row = el("div", "meter-row");
+      var top = el("div", "meter-top");
+      top.appendChild(el("span", "meter-name", s.name));
+      top.appendChild(el("span", "meter-num", "<b>" + s.now + "</b> / " + s.goal));
+      row.appendChild(top);
+      var m = el("div", "meter");
+      var goal = el("div", "goal");
+      goal.style.width = s.goal + "%";
+      var now = el("div", "now");
+      now.style.width = s.now + "%";
+      m.appendChild(goal);
+      m.appendChild(now);
+      row.appendChild(m);
+      box.appendChild(row);
+    });
+  }
+
+  /* =========================================================
+     7. 项目阶梯
+     ========================================================= */
+  function renderLadder() {
+    var box = document.getElementById("ladder");
+    DATA.ladder.forEach(function (p) {
+      var step = el("div", "card step");
+      var l = el("div", "step-l");
+      l.appendChild(el("div", "lv", p.lv));
+      l.appendChild(el("div", "t", p.when));
+      step.appendChild(l);
+
+      var r = el("div", "step-r");
+      r.appendChild(el("h4", null, p.title));
+      r.appendChild(el("div", "desc", p.desc));
+      var st = el("div", "stack");
+      p.stack.forEach(function (x) { st.appendChild(el("span", null, x)); });
+      r.appendChild(st);
+      r.appendChild(el("div", "accept", "<b>验收：</b>" + p.accept));
+      r.appendChild(el("div", "resume-line", "<b>简历写法 → </b>" + p.resume));
+      step.appendChild(r);
+      box.appendChild(step);
+    });
+  }
+
+  /* =========================================================
+     8. 竞赛表
+     ========================================================= */
+  function renderContests() {
+    var body = document.getElementById("contestBody");
+    DATA.contests.forEach(function (c) {
+      var tr = el("tr");
+      tr.appendChild(el("td", null, "<b>" + c[0] + "</b>"));
+      tr.appendChild(el("td", "mono", c[1]));
+      var lvlClass = c[2] === "极高" || c[2] === "高" ? "g" : (c[2] === "中" ? "" : "n");
+      tr.appendChild(el("td", null, '<span class="tag ' + lvlClass + '">' + c[2] + "</span>"));
+      tr.appendChild(el("td", null, c[3]));
+      tr.appendChild(el("td", null, c[4]));
+      body.appendChild(tr);
+    });
+  }
+
+  /* =========================================================
+     9. 短板
+     ========================================================= */
+  function renderWeak() {
+    var box = document.getElementById("weakGrid");
+    DATA.weak.forEach(function (w) {
+      var c = el("div", "card weak" + (w.dot === "g" ? " good" : ""));
+      var top = el("div", "weak-top");
+      top.appendChild(el("span", "dot " + w.dot));
+      top.appendChild(el("h4", null, w.title));
+      c.appendChild(top);
+      c.appendChild(el("div", "verdict", w.verdict));
+
+      var p3 = el("div", "plan3");
+      w.steps.forEach(function (s) {
+        var row = el("div");
+        row.appendChild(el("span", null, s[0]));
+        row.appendChild(el("span", null, s[1]));
+        p3.appendChild(row);
+      });
+      c.appendChild(p3);
+      c.appendChild(el("div", "bottom", w.bottom));
+      box.appendChild(c);
+    });
+  }
+
+  /* =========================================================
+     10. 投递地图
+     ========================================================= */
+  function renderMap() {
+    var box = document.getElementById("mapGrid");
+    DATA.map.forEach(function (m) {
+      var c = el("div", "card map-col " + m.cls);
+      c.appendChild(el("h4", null, m.title));
+      c.appendChild(el("div", "hint", m.hint));
+      var ul = el("ul");
+      m.items.forEach(function (it) {
+        var li = el("li");
+        li.appendChild(el("span", null, it[0]));
+        li.appendChild(el("em", null, it[1]));
+        ul.appendChild(li);
+      });
+      c.appendChild(ul);
+      box.appendChild(c);
+    });
+  }
+
+  /* =========================================================
+     11. 自检清单
+     ========================================================= */
+  var CHECK_KEY = "yyt-roadmap-checks";
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem(CHECK_KEY) || "{}"); } catch (e) { store = {}; }
+
+  function saveChecks() {
+    try { localStorage.setItem(CHECK_KEY, JSON.stringify(store)); } catch (e) {}
+  }
+
+  function renderChecks() {
+    var box = document.getElementById("checkGrid");
+    var total = 0;
+
+    DATA.checks.forEach(function (c, ci) {
+      var card = el("div", "card check-card");
+      var h = el("h4", null, c.t);
+      h.appendChild(el("span", null, c.d));
+      card.appendChild(h);
+
+      c.items.forEach(function (txt, ii) {
+        var key = ci + "-" + ii;
+        total++;
+        var label = el("label", "check-row");
+        var input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = !!store[key];
+        if (input.checked) label.classList.add("done");
+        input.addEventListener("change", function () {
+          store[key] = input.checked;
+          saveChecks();
+          label.classList.toggle("done", input.checked);
+          updateBar();
+        });
+        label.appendChild(input);
+        label.appendChild(el("span", null, txt));
+        card.appendChild(label);
+      });
+      box.appendChild(card);
+    });
+
+    function updateBar() {
+      var done = 0;
+      DATA.checks.forEach(function (c, ci) {
+        c.items.forEach(function (_, ii) { if (store[ci + "-" + ii]) done++; });
+      });
+      document.getElementById("checkCount").textContent = done + " / " + total;
+      document.getElementById("checkFill").style.width = (total ? (done / total) * 100 : 0) + "%";
+    }
+    updateBar();
+
+    document.getElementById("checkReset").addEventListener("click", function () {
+      store = {};
+      saveChecks();
+      box.querySelectorAll("input").forEach(function (i) { i.checked = false; });
+      box.querySelectorAll(".check-row").forEach(function (r) { r.classList.remove("done"); });
+      updateBar();
+      toast("已清空自检进度");
+    });
+  }
+
+  /* =========================================================
+     12. 交互
+     ========================================================= */
+  var MOON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  var SUN = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+
+  function initTheme() {
+    var btn = document.getElementById("themeBtn");
+    function paint() {
+      var dark = document.documentElement.getAttribute("data-theme") === "dark";
+      btn.innerHTML = dark ? SUN : MOON;
+      btn.setAttribute("aria-label", dark ? "切换到浅色" : "切换到深色");
+    }
+    btn.addEventListener("click", function () {
+      var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try { localStorage.setItem("yyt-roadmap-theme", next); } catch (e) {}
+      paint();
+      toast(next === "dark" ? "已切换深色" : "已切换浅色");
+    });
+    paint();
+  }
+
+  function initNav() {
+    var nav = document.getElementById("nav");
+    var menuBtn = document.getElementById("menuBtn");
+    menuBtn.addEventListener("click", function () {
+      var open = nav.classList.toggle("open");
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    nav.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") {
+        nav.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    var links = Array.prototype.slice.call(nav.querySelectorAll("a"));
+    var sections = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) {
+            links.forEach(function (l) { l.classList.remove("active"); });
+            var idx = sections.indexOf(en.target);
+            if (idx >= 0) links[idx].classList.add("active");
+          }
+        });
+      }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+      sections.forEach(function (s) { if (s) io.observe(s); });
+    }
+  }
+
+  function initMisc() {
+    var top = document.getElementById("toTop");
+    window.addEventListener("scroll", function () {
+      top.classList.toggle("show", window.scrollY > 420);
+    }, { passive: true });
+    top.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("printBtn").addEventListener("click", function () {
+      window.print();
+    });
+  }
+
+  /* =========================================================
+     13. 启动
+     ========================================================= */
+  renderHero();
+  renderGap();
+  renderPlan();
+  renderSkills();
+  renderLadder();
+  renderContests();
+  renderWeak();
+  renderMap();
+  renderChecks();
+  initTheme();
+  initNav();
+  initMisc();
+})();
+</script>
+</body>
+</html>
